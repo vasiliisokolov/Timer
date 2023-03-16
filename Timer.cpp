@@ -29,8 +29,17 @@ int main()
         //std::cout << (int)difftime(d, t) % 60 << std::endl;
         if ((int)difftime(d, t) > distance) break;
         std::tm now = *std::localtime(&d);
-        now.tm_min = (int)difftime(d, t) / 60;
-        now.tm_sec = (int)difftime(d, t) % 60;
+        if ((date.tm_sec - (int)difftime(d, t) % 60) < 0)
+        {
+            now.tm_min = (date.tm_min - (int)difftime(d, t) / 60);
+            now.tm_sec = 60 + (date.tm_sec - (int)difftime(d, t) % 60);
+        }
+        else
+        {
+            now.tm_min = date.tm_min - (int)difftime(d, t) / 60;
+            now.tm_sec = date.tm_sec - (int)difftime(d, t) % 60;
+        }
+        
         std::cout << std::put_time(&now, "%M/%S") << std::endl;
         
     }
